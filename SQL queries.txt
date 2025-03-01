@@ -95,9 +95,10 @@ Request 6.   Generate a report which contains the top 5 customers who received a
 
 
                                                  SELECT 
-                                                   c.customer_code,
-                                                   c.customer,
-                                                   concat(round(avg(pre_invoice_discount_pct)*100,2),"%") as avg_discount_pt
+                                                     c.customer_code,
+                                                     c.customer,
+                                                     concat(round(avg(pre_invoice_discount_pct)*100,2),"%") as 
+                                                       avg_discount_pt
                                                   from dim_customer c
                                                   join fact_pre_invoice_deductions f
                                                      on c.customer_code=f.customer_code
@@ -115,9 +116,10 @@ Request 7.   Get the complete report of the Gross sales amount for the customer 
 
 
                                                   SELECT 
-                                                     MONTHNAME(s.date) AS month, 
-                                                     s.fiscal_year as year, 
-                                                     ROUND(SUM((gross_price*sold_quantity)/1000000),3) AS gross_sales_amount
+                                                       MONTHNAME(s.date) AS month, 
+                                                       s.fiscal_year as year, 
+                                                       ROUND(SUM((gross_price*sold_quantity)/1000000),3) AS 
+                                                        gross_sales_amount
                                                   FROM fact_gross_price f
                                                   JOIN fact_sales_monthly s
                                                      ON f.product_code=s.product_code and 
