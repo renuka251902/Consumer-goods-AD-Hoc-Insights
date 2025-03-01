@@ -4,5 +4,7 @@ AtliQ Hardwares, a leading computer hardware manufacturer in India, sought to en
 
  ## Project Overview
 🔹 Objective: Execute SQL queries, derive insights, and present findings to top management.
+
 🔹 Tools Used: MySQL, Power BI, Microsoft PowerPoint
+
 🔹 Skills Applied: SQL querying, data visualization, business intelligence, and storytelling
