@@ -19,7 +19,8 @@ Request 2.   What is the percentage of unique product increase in 2021 vs. 2020?
 	                                       from fact_sales_monthly
                                         where fiscal_year='2020')
                                  select *,
-                                round(((unique_products_2021-unique_products_2020)/unique_products_2020)*100,2) as pct_chnge
+                                 round(((unique_products_2021-unique_products_2020)/unique_products_2020)*100,2) as 
+                                  pct_chnge
                                 from cte1;
 
 
