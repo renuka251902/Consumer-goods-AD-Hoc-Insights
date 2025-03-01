@@ -1,0 +1,72 @@
+Request-1.   Provide the list of markets in which customer "Atliq Exclusive" operates its business in the APAC region. 
+
+                                       SELECT DISTINCT market
+                                       FROM dim_customer
+                                       WHERE customer="Atliq Exclusive" AND region="APAC";
+
+
+Request-2.   What is the percentage of unique product increase in 2021 vs. 2020? The final output contains these fields,
+             unique_products_2020, unique_products_2021, prcentage_chg
+
+                                          with cte1 as (select 
+		                                         count(distinct product_code) as unique_products_2020,
+                                                   (select
+                                                       count(distinct product_code) 
+				                                               from fact_sales_monthly
+	                                            where fiscal_year='2021') as unique_products_2021
+	                                       from fact_sales_monthly
+                                    where fiscal_year='2020')
+                              select *,
+                                round(((unique_products_2021-unique_products_2020)/unique_products_2020)*100,2) as pct_chnge
+                              from cte1;
+
+
+Request-3.   Provide a report with all the unique product counts for each segment and sort them in descending order of product counts. The final output contains 2 fields 
+             segment, product_count
+                                       
+                                           SELECT 
+                                             segment, 
+                                             COUNT(product_code) AS product_count
+                                           FROM 
+                                             dim_product
+                                           GROUP BY
+                                             segment
+                                           ORDER BY
+                                             product_count DESC;
+
+
+Request-4.   Follow-up: Which segment had the most increase in unique products in 2021 vs 2020? The final output contains these fields,
+                      segment, product_count_2020, product_count_2021, difference
+
+
+                                            WITH cte1 AS(
+                                                 SELECT 
+                                                   segment, 
+                                                   COUNT(DISTINCT f.product_code) AS product_count_2020
+                                                FROM dim_product d
+                                                JOIN fact_sales_monthly f
+                                                  ON d.product_code=f.product_code
+                                                WHERE fiscal_year=2020
+                                                GROUP BY d.segment
+                                              ),
+                                               cte2 AS(
+                                                 SELECT 
+                                                   segment , 
+                                                   COUNT(DISTINCT f.product_code) AS product_count_2021
+                                                FROM dim_product d
+                                                JOIN fact_sales_monthly f
+                                                  ON d.product_code=f.product_code
+                                                WHERE fiscal_year=2021
+                                                GROUP BY d.segment
+                                              )
+                                                 SELECT 
+                                                 cte1.segment,
+                                                 cte1.product_count_2020,
+                                                 cte2.product_count_2021,
+                                                 product_count_2021-product_count_2020 as difference 
+                                                    from cte1
+                                                 join cte2
+                                                 using(segment);
+
+
+
